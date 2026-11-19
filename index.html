@@ -1,0 +1,905 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#0b0620">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>生日快乐</title>
+<style>
+/* ======================
+   可以在这里改成你想要的内容
+   ====================== */
+:root{
+  --bg1:#0b0620;
+  --bg2:#180a33;
+  --bg3:#2a0f3d;
+  --pink:#ff7aa8;
+  --pink-soft:#ffc2d6;
+  --gold:#ffd36b;
+  --cream:#fff6e9;
+  --text:#fdf6ff;
+  --muted:rgba(253,246,255,.62);
+}
+*{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html,body{ height:100%; }
+body{
+  background:
+    radial-gradient(120% 80% at 50% 0%, #3a1550 0%, transparent 55%),
+    radial-gradient(90% 70% at 50% 100%, #2b0b3a 0%, transparent 60%),
+    linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 55%, var(--bg3) 100%);
+  color:var(--text);
+  font-family:-apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+  overflow:hidden;
+  overscroll-behavior:none;
+  user-select:none;
+  -webkit-user-select:none;
+}
+#bg{
+  position:fixed;
+  top:0; left:0; right:0; bottom:0;
+  inset:0;
+  width:100%; height:100%;
+  display:block; pointer-events:none;
+}
+
+.app{
+  position:relative;
+  z-index:2;
+  height:100%;
+  height:100vh;
+  height:100dvh;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding: calc(env(safe-area-inset-top) + 56px) 22px calc(env(safe-area-inset-bottom) + 64px);
+}
+
+/* ---------- 顶部按钮 ---------- */
+.topbar{
+  position:fixed;
+  top: calc(env(safe-area-inset-top) + 14px);
+  right:16px;
+  z-index:5;
+  display:flex;
+  gap:10px;
+}
+.icon-btn{
+  width:40px; height:40px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.07);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  color:var(--text);
+  cursor:pointer;
+  transition:transform .2s ease, background .2s ease, opacity .2s ease;
+}
+.icon-btn:active{ transform:scale(.92); background:rgba(255,255,255,.14); }
+.icon-btn .wave{ transition:opacity .2s ease; }
+.icon-btn.muted .wave{ opacity:.15; }
+.icon-btn.muted::after{
+  content:"";
+  position:absolute;
+  width:22px; height:2px;
+  background:currentColor;
+  transform:rotate(-45deg);
+  border-radius:2px;
+  opacity:.85;
+}
+.icon-btn{ position:relative; }
+
+/* ---------- 蛋糕 ---------- */
+.cake-wrap{
+  position:relative;
+  width:78vw;
+  max-width:300px;
+  height:64vw;
+  max-height:250px;
+  margin-bottom: 6px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+}
+.glow{
+  position:absolute;
+  left:50%; bottom:0;
+  width:280px; height:240px;
+  transform:translateX(-50%);
+  background:radial-gradient(circle at 50% 52%, rgba(255,190,90,.28) 0%, rgba(255,150,60,.12) 38%, transparent 68%);
+  opacity:0;
+  transition:opacity .8s ease;
+  pointer-events:none;
+  filter:blur(6px);
+}
+.glow.on{ opacity:1; }
+.cake{
+  position:relative;
+  width:240px;
+  height:200px;
+  transform-origin:50% 100%;
+  animation:cakeFloat 5.5s ease-in-out infinite;
+}
+@keyframes cakeFloat{
+  0%,100%{ transform:translateY(0); }
+  50%{ transform:translateY(-5px); }
+}
+.layer{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  border-radius:12px 12px 10px 10px;
+  overflow:hidden;
+}
+.layer::before{ /* 奶油挂边 */
+  content:"";
+  position:absolute;
+  top:-6px; left:0; right:0;
+  height:20px;
+  background:
+    radial-gradient(circle at 12% 0%, #fff 0 9px, transparent 10px),
+    radial-gradient(circle at 34% 6%, #fff 0 10px, transparent 11px),
+    radial-gradient(circle at 58% 0%, #fff 0 9px, transparent 10px),
+    radial-gradient(circle at 82% 6%, #fff 0 10px, transparent 11px);
+  background-size:50px 20px;
+  background-repeat:repeat-x;
+  opacity:.95;
+}
+.l1{
+  bottom:16px;
+  width:240px; height:66px;
+  background:linear-gradient(180deg,#ffd6e6 0%,#f9a9c6 55%,#e87ea2 100%);
+  box-shadow:inset 0 -10px 0 rgba(0,0,0,.07), 0 10px 30px rgba(0,0,0,.35);
+}
+.l2{
+  bottom:78px;
+  width:198px; height:58px;
+  background:linear-gradient(180deg,#ffe8f1 0%,#fcbdd5 55%,#f19ab8 100%);
+  box-shadow:inset 0 -8px 0 rgba(0,0,0,.06);
+}
+.l3{
+  bottom:132px;
+  width:154px; height:54px;
+  background:linear-gradient(180deg,#fff5f9 0%,#fdd4e3 55%,#f8b6cc 100%);
+  box-shadow:inset 0 -8px 0 rgba(0,0,0,.05);
+}
+.sprinkle{
+  position:absolute;
+  width:5px; height:5px;
+  border-radius:50%;
+  opacity:.85;
+}
+.plate{
+  position:absolute;
+  bottom:0; left:50%;
+  transform:translateX(-50%);
+  width:278px; height:20px;
+  border-radius:50%;
+  background:linear-gradient(180deg, rgba(255,255,255,.28), rgba(255,255,255,.05));
+  box-shadow:0 12px 26px rgba(0,0,0,.45);
+}
+
+/* ---------- 蜡烛 ---------- */
+.candles{
+  position:absolute;
+  bottom:180px;
+  left:50%;
+  transform:translateX(-50%);
+  width:140px;
+  height:56px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  padding:0 6px;
+  z-index:3;
+}
+.candle{
+  position:relative;
+  width:9px;
+  height:44px;
+  border-radius:4px;
+  background:repeating-linear-gradient(45deg,#fff 0 5px,#ff7fa4 5px 10px);
+  box-shadow:inset -2px 0 0 rgba(0,0,0,.12);
+}
+.candle::before{ /* 烛芯 */
+  content:"";
+  position:absolute;
+  top:-5px; left:50%;
+  transform:translateX(-50%);
+  width:2px; height:6px;
+  background:#3b2a22;
+  border-radius:2px;
+}
+.flame{
+  position:absolute;
+  left:50%;
+  top:-20px;
+  width:11px;
+  height:17px;
+  transform:translateX(-50%) scale(.15);
+  transform-origin:50% 100%;
+  border-radius:50% 50% 50% 50% / 62% 62% 38% 38%;
+  background:radial-gradient(circle at 50% 72%, #fffbe0 0%, #ffe08a 32%, #ffab3d 62%, rgba(255,110,0,0) 74%);
+  box-shadow:0 0 12px rgba(255,180,70,.95), 0 0 26px rgba(255,120,20,.55);
+  opacity:0;
+  transition:opacity .3s ease, transform .35s cubic-bezier(.2,1.6,.4,1);
+  pointer-events:none;
+}
+.candle.lit .flame{
+  opacity:1;
+  transform:translateX(-50%) scale(1);
+  animation:flicker .13s infinite alternate ease-in-out;
+}
+.candle.out .flame{
+  opacity:0;
+  transform:translateX(-50%) scale(.1);
+}
+@keyframes flicker{
+  0%{ transform:translateX(-50%) scale(1) rotate(-2deg); }
+  100%{ transform:translateX(-48%) scale(1.08,.92) rotate(2deg); }
+}
+
+/* ---------- 标题 ---------- */
+.title{
+  margin-top:10px;
+  font-size:44px;
+  font-size:clamp(32px, 11.5vw, 50px);
+  font-weight:800;
+  letter-spacing:.14em;
+  text-indent:.14em;
+  background:linear-gradient(180deg,#fff8e6 0%,#ffd98a 45%,#ff9fc0 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  filter:drop-shadow(0 0 18px rgba(255,190,120,.35));
+  display:none;
+}
+.title.show{ display:block; animation:riseIn .9s cubic-bezier(.2,.9,.2,1) both; }
+
+.name{
+  margin-top:10px;
+  font-size:15px;
+  letter-spacing:.28em;
+  text-indent:.28em;
+  color:var(--pink-soft);
+  display:none;
+}
+.name.show{ display:block; animation:riseIn .8s ease both .15s; }
+
+@keyframes riseIn{
+  from{ opacity:0; transform:translateY(18px) scale(.95); }
+  to{ opacity:1; transform:translateY(0) scale(1); }
+}
+
+/* ---------- 祝福卡片 ---------- */
+.card{
+  width:86vw;
+  max-width:340px;
+  margin-top:20px;
+  padding:20px 20px 16px;
+  border-radius:18px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.14);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  box-shadow:0 18px 40px rgba(0,0,0,.35);
+  display:none;
+}
+.card.show{ display:block; animation:riseIn .7s ease both; }
+.msg{
+  font-size:14.5px;
+  line-height:2;
+  color:rgba(253,246,255,.92);
+  white-space:pre-line;
+  min-height:1em;
+}
+.cursor{
+  display:inline-block;
+  width:2px; height:1em;
+  margin-left:2px;
+  vertical-align:-.12em;
+  background:var(--pink-soft);
+  animation:blink .8s steps(1) infinite;
+}
+@keyframes blink{ 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+.sign{
+  margin-top:12px;
+  font-size:12.5px;
+  color:var(--muted);
+  text-align:right;
+  opacity:0;
+  transition:opacity .6s ease;
+}
+.sign.show{ opacity:1; }
+.replay{
+  display:block;
+  margin:16px auto 0;
+  padding:8px 18px;
+  font-size:12.5px;
+  letter-spacing:.1em;
+  color:var(--pink-soft);
+  background:transparent;
+  border:1px solid rgba(255,194,214,.35);
+  border-radius:999px;
+  opacity:0;
+  transition:opacity .6s ease, background .2s ease;
+}
+.replay.show{ opacity:1; }
+.replay:active{ background:rgba(255,194,214,.12); }
+
+/* ---------- 底部提示 ---------- */
+.hint{
+  position:fixed;
+  left:0; right:0;
+  bottom: calc(env(safe-area-inset-bottom) + 26px);
+  text-align:center;
+  font-size:13px;
+  letter-spacing:.08em;
+  color:rgba(255,255,255,.62);
+  z-index:4;
+  pointer-events:none;
+  animation:hintPulse 2.2s ease-in-out infinite;
+  transition:opacity .4s ease;
+}
+@keyframes hintPulse{ 0%,100%{ opacity:.55; } 50%{ opacity:.95; } }
+
+@media (max-height:640px){
+  .cake{ transform:scale(.86); }
+  .card{ margin-top:14px; padding:16px; }
+  .title{ font-size:30px; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="app" id="app">
+
+  <div class="topbar">
+    <button class="icon-btn" id="musicBtn" aria-label="背景音乐">
+      <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 5 6 9H3v6h3l5 4z"/>
+        <path class="wave" d="M15.4 8.6a5 5 0 0 1 0 6.8"/>
+        <path class="wave" d="M18.2 6a8.5 8.5 0 0 1 0 12"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="cake-wrap">
+    <div class="glow" id="cakeGlow"></div>
+    <div class="cake" id="cake">
+      <div class="candles" id="candles"></div>
+      <div class="layer l3"></div>
+      <div class="layer l2"></div>
+      <div class="layer l1"></div>
+      <div class="plate"></div>
+    </div>
+  </div>
+
+  <h1 class="title" id="title">生日快乐</h1>
+  <p class="name" id="nameText"></p>
+
+  <div class="card" id="card">
+    <p class="msg" id="msg"></p>
+    <p class="sign" id="sign"></p>
+    <button class="replay" id="replay">再 来 一 次</button>
+  </div>
+
+</div>
+
+<div class="hint" id="hint">轻触屏幕，点亮生日蜡烛</div>
+
+<script>
+/* ==================================================================
+   自定义区：改名字、改祝福语，保存后刷新即可
+   ================================================================== */
+var CONFIG = {
+  name: "亲爱的你",
+  wish: [
+    "愿你今天的每一秒，都被温柔以待；",
+    "愿所有悄悄许下的愿望，都能一一实现；",
+    "往后的岁岁年年，平安、健康、快乐。"
+  ],
+  signature: "一直陪着你的人"
+};
+
+/* ================= 基础 ================= */
+var $ = function(id){ return document.getElementById(id); };
+var app = $('app'), candlesBox = $('candles');
+var glow = $('cakeGlow'), hint = $('hint');
+var titleEl = $('title'), nameEl = $('nameText');
+var card = $('card'), msgEl = $('msg'), signEl = $('sign'), replayBtn = $('replay');
+var musicBtn = $('musicBtn');
+
+var stage = 0;          // 0 未点灯 | 1 已点灯 | 2 已吹灭
+var soundOn = true;
+
+/* ================= 蜡烛 ================= */
+var CANDLE_COUNT = 5;
+var candleEls = [];
+var candleHeights = [46, 40, 50, 42, 47];
+
+for (var i = 0; i < CANDLE_COUNT; i++) {
+  var c = document.createElement('div');
+  c.className = 'candle';
+  c.style.height = candleHeights[i] + 'px';
+  var f = document.createElement('div');
+  f.className = 'flame';
+  c.appendChild(f);
+  candlesBox.appendChild(c);
+  candleEls.push(c);
+}
+
+/* 蛋糕上的小彩点 */
+(function sprinkles(){
+  var layers = document.querySelectorAll('.layer');
+  for (var l = 0; l < layers.length; l++) {
+    for (var k = 0; k < 9; k++) {
+      var s = document.createElement('i');
+      s.className = 'sprinkle';
+      s.style.left = (8 + Math.random() * 84) + '%';
+      s.style.top = (28 + Math.random() * 46) + '%';
+      s.style.background = ['#ffe27a','#fff','#8de7ff','#ff9fc0','#b9a4ff'][Math.floor(Math.random()*5)];
+      s.style.opacity = 0.5 + Math.random() * 0.4;
+      layers[l].appendChild(s);
+    }
+  }
+})();
+
+/* ================= Canvas 粒子 ================= */
+var cvs = $('bg'), ctx = cvs.getContext('2d');
+var W = 0, H = 0, DPR = 1;
+var stars = [], confetti = [], hearts = [], sparks = [], smoke = [], fw = [];
+
+function resize(){
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = window.innerWidth;
+  H = window.innerHeight;
+  cvs.width = Math.floor(W * DPR);
+  cvs.height = Math.floor(H * DPR);
+  cvs.style.width = W + 'px';
+  cvs.style.height = H + 'px';
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+
+  stars.length = 0;
+  var n = Math.round(W * H / 9000);
+  for (var i = 0; i < n; i++) {
+    stars.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.5 + 0.4,
+      a: Math.random(),
+      s: Math.random() * 0.018 + 0.004
+    });
+  }
+}
+window.addEventListener('resize', resize);
+resize();
+
+function heartPath(x, y, s){
+  ctx.beginPath();
+  ctx.moveTo(x, y + s * 0.28);
+  ctx.bezierCurveTo(x, y, x - s * 0.5, y - s * 0.25, x - s * 0.5, y + s * 0.18);
+  ctx.bezierCurveTo(x - s * 0.5, y + s * 0.58, x, y + s * 0.8, x, y + s);
+  ctx.bezierCurveTo(x, y + s * 0.8, x + s * 0.5, y + s * 0.58, x + s * 0.5, y + s * 0.18);
+  ctx.bezierCurveTo(x + s * 0.5, y - s * 0.25, x, y, x, y + s * 0.28);
+  ctx.closePath();
+}
+
+function spawnConfetti(count){
+  var colors = ['#ff7aa8','#ffd36b','#8de7ff','#b9a4ff','#fff','#ff9f6b'];
+  for (var i = 0; i < count; i++) {
+    confetti.push({
+      x: W * 0.5 + (Math.random() - 0.5) * W * 0.5,
+      y: -20 - Math.random() * 120,
+      vx: (Math.random() - 0.5) * 4,
+      vy: Math.random() * 2 + 1.5,
+      w: 5 + Math.random() * 6,
+      h: 8 + Math.random() * 8,
+      rot: Math.random() * Math.PI * 2,
+      vr: (Math.random() - 0.5) * 0.25,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      sway: Math.random() * Math.PI * 2
+    });
+  }
+}
+
+function spawnHeart(x, y){
+  hearts.push({
+    x: x,
+    y: y,
+    s: 10 + Math.random() * 16,
+    vy: -(0.6 + Math.random() * 1.2),
+    vx: (Math.random() - 0.5) * 0.8,
+    a: 0.9,
+    rot: (Math.random() - 0.5) * 0.4,
+    hue: Math.random() > 0.5 ? '255,122,168' : '255,211,107'
+  });
+}
+
+function spawnSparks(x, y, n){
+  for (var i = 0; i < n; i++) {
+    var ang = -Math.PI / 2 + (Math.random() - 0.5) * 1.8;
+    var sp = 1 + Math.random() * 2.6;
+    sparks.push({
+      x: x, y: y,
+      vx: Math.cos(ang) * sp,
+      vy: Math.sin(ang) * sp,
+      life: 1,
+      decay: 0.012 + Math.random() * 0.02,
+      r: 0.8 + Math.random() * 1.6,
+      color: Math.random() > 0.4 ? '255,214,120' : '255,150,60'
+    });
+  }
+}
+
+function spawnSmoke(x, y){
+  smoke.push({
+    x: x, y: y,
+    vx: (Math.random() - 0.5) * 0.4,
+    vy: -(0.5 + Math.random() * 0.6),
+    r: 3 + Math.random() * 3,
+    a: 0.45,
+    grow: 0.06 + Math.random() * 0.06
+  });
+}
+
+function burst(x, y){
+  var hue = [ '255,122,168', '255,211,107', '141,231,255', '185,164,255', '255,255,255' ][Math.floor(Math.random()*5)];
+  var n = 46;
+  for (var i = 0; i < n; i++) {
+    var a = (i / n) * Math.PI * 2 + Math.random() * 0.15;
+    var sp = 1.6 + Math.random() * 4.2;
+    fw.push({
+      x: x, y: y,
+      vx: Math.cos(a) * sp,
+      vy: Math.sin(a) * sp,
+      life: 1,
+      decay: 0.008 + Math.random() * 0.012,
+      r: 1 + Math.random() * 1.8,
+      color: hue
+    });
+  }
+}
+
+var lastTime = 0;
+function tick(now){
+  var dt = lastTime ? Math.min((now - lastTime) / 16.67, 3) : 1;
+  lastTime = now;
+
+  ctx.clearRect(0, 0, W, H);
+
+  /* 星空 */
+  for (var i = 0; i < stars.length; i++) {
+    var st = stars[i];
+    st.a += st.s * dt;
+    var alpha = 0.25 + Math.abs(Math.sin(st.a)) * 0.65;
+    ctx.beginPath();
+    ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255,255,255,' + alpha.toFixed(3) + ')';
+    ctx.fill();
+  }
+
+  /* 五彩纸屑 */
+  for (i = confetti.length - 1; i >= 0; i--) {
+    var p = confetti[i];
+    p.sway += 0.06 * dt;
+    p.vy += 0.055 * dt;
+    p.x += (p.vx + Math.sin(p.sway) * 0.9) * dt;
+    p.y += p.vy * dt;
+    p.rot += p.vr * dt;
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rot);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = 0.92;
+    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h * Math.abs(Math.cos(p.sway * 1.4)));
+    ctx.restore();
+    if (p.y > H + 40) confetti.splice(i, 1);
+  }
+
+  /* 爱心 */
+  for (i = hearts.length - 1; i >= 0; i--) {
+    var h = hearts[i];
+    h.x += h.vx * dt;
+    h.y += h.vy * dt;
+    h.a -= 0.006 * dt;
+    if (h.a <= 0) { hearts.splice(i, 1); continue; }
+    ctx.save();
+    ctx.translate(h.x, h.y);
+    ctx.rotate(h.rot);
+    ctx.globalAlpha = h.a;
+    ctx.fillStyle = 'rgba(' + h.hue + ',0.9)';
+    heartPath(0, -h.s * 0.5, h.s);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  /* 烛花 */
+  for (i = sparks.length - 1; i >= 0; i--) {
+    var sk = sparks[i];
+    sk.vy += 0.03 * dt;
+    sk.x += sk.vx * dt;
+    sk.y += sk.vy * dt;
+    sk.life -= sk.decay * dt;
+    if (sk.life <= 0) { sparks.splice(i, 1); continue; }
+    ctx.beginPath();
+    ctx.arc(sk.x, sk.y, sk.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(' + sk.color + ',' + sk.life.toFixed(3) + ')';
+    ctx.fill();
+  }
+
+  /* 烟雾 */
+  for (i = smoke.length - 1; i >= 0; i--) {
+    var sm = smoke[i];
+    sm.x += sm.vx * dt;
+    sm.y += sm.vy * dt;
+    sm.r += sm.grow * dt;
+    sm.a -= 0.005 * dt;
+    if (sm.a <= 0) { smoke.splice(i, 1); continue; }
+    ctx.beginPath();
+    ctx.arc(sm.x, sm.y, sm.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(220,220,230,' + (sm.a * 0.5).toFixed(3) + ')';
+    ctx.fill();
+  }
+
+  /* 烟花 */
+  for (i = fw.length - 1; i >= 0; i--) {
+    var f = fw[i];
+    f.vy += 0.035 * dt;
+    f.vx *= 0.985;
+    f.x += f.vx * dt;
+    f.y += f.vy * dt;
+    f.life -= f.decay * dt;
+    if (f.life <= 0) { fw.splice(i, 1); continue; }
+    ctx.beginPath();
+    ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(' + f.color + ',' + f.life.toFixed(3) + ')';
+    ctx.fill();
+  }
+
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+
+/* 背景里偶尔飘过的爱心 */
+setInterval(function(){
+  if (document.hidden) return;
+  spawnHeart(Math.random() * W, H + 20);
+  hearts[hearts.length - 1].vy = -(0.35 + Math.random() * 0.5);
+  hearts[hearts.length - 1].a = 0.35;
+}, 2600);
+
+/* ================= 音效（Web Audio 合成，无需外部文件） ================= */
+var actx = null, activeOsc = [];
+function getAudio(){
+  if (!actx) {
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    actx = new AC();
+  }
+  if (actx.state === 'suspended') actx.resume();
+  return actx;
+}
+function tone(freq, when, dur, vol, type){
+  var a = getAudio();
+  if (!a) return;
+  var o = a.createOscillator(), g = a.createGain();
+  o.type = type || 'triangle';
+  o.frequency.value = freq;
+  g.gain.setValueAtTime(0.0001, when);
+  g.gain.linearRampToValueAtTime(vol, when + 0.03);
+  g.gain.exponentialRampToValueAtTime(0.0001, when + dur);
+  o.connect(g);
+  g.connect(a.destination);
+  o.start(when);
+  o.stop(when + dur + 0.05);
+  activeOsc.push(o);
+  o.onended = function(){
+    var idx = activeOsc.indexOf(o);
+    if (idx > -1) activeOsc.splice(idx, 1);
+  };
+}
+
+/* 生日快乐歌 */
+var NOTE = { G4:392.00, A4:440.00, B4:493.88, C5:523.25, D5:587.33, E5:659.25, F5:698.46, G5:783.99 };
+var MELODY = [
+  ['G4',0.5],['G4',0.5],['A4',1],['G4',1],['C5',1],['B4',2],
+  ['G4',0.5],['G4',0.5],['A4',1],['G4',1],['D5',1],['C5',2],
+  ['G4',0.5],['G4',0.5],['G5',1],['E5',1],['C5',1],['B4',1],['A4',2],
+  ['F5',0.5],['F5',0.5],['E5',1],['C5',1],['D5',1],['C5',2]
+];
+function playMelody(){
+  var a = getAudio();
+  if (!a || !soundOn) return;
+  var beat = 0.52;
+  var t = a.currentTime + 0.1;
+  for (var i = 0; i < MELODY.length; i++) {
+    var step = MELODY[i];
+    var dur = step[1] * beat;
+    tone(NOTE[step[0]], t, dur * 0.92, 0.075, 'triangle');
+    tone(NOTE[step[0]] / 2, t, dur * 0.92, 0.03, 'sine');
+    t += dur;
+  }
+}
+function stopMusic(){
+  for (var i = 0; i < activeOsc.length; i++) {
+    try { activeOsc[i].stop(); } catch(e){}
+  }
+  activeOsc = [];
+}
+musicBtn.addEventListener('click', function(e){
+  e.stopPropagation();
+  soundOn = !soundOn;
+  musicBtn.classList.toggle('muted', !soundOn);
+  if (soundOn) playMelody();
+  else stopMusic();
+});
+
+/* ================= 交互流程 ================= */
+function lightCandles(){
+  stage = 1;
+  getAudio(); /* iOS 微信：必须在用户手势里解锁音频 */
+  glow.classList.add('on');
+  hint.textContent = '闭上眼，许个愿，然后轻触屏幕吹灭蜡烛';
+  vibrate(12);
+
+  for (var i = 0; i < candleEls.length; i++) {
+    (function(idx){
+      setTimeout(function(){
+        candleEls[idx].classList.add('lit');
+        var r = candleEls[idx].getBoundingClientRect();
+        spawnSparks(r.left + r.width / 2, r.top - 4, 10);
+        tone(760 + idx * 40, (getAudio() ? getAudio().currentTime : 0), 0.12, 0.05, 'sine');
+      }, idx * 130);
+    })(i);
+  }
+}
+
+function blowCandles(){
+  stage = 2;
+  hint.textContent = '';
+  vibrate([15, 40, 25]);
+
+  for (var i = 0; i < candleEls.length; i++) {
+    (function(idx){
+      setTimeout(function(){
+        var el = candleEls[idx];
+        el.classList.remove('lit');
+        el.classList.add('out');
+        var r = el.getBoundingClientRect();
+        spawnSmoke(r.left + r.width / 2, r.top - 14);
+        spawnSmoke(r.left + r.width / 2 + (Math.random()-0.5)*6, r.top - 20);
+      }, idx * 150);
+    })(i);
+  }
+
+  setTimeout(function(){
+    glow.classList.remove('on');
+    reveal();
+  }, candleEls.length * 150 + 260);
+}
+
+function reveal(){
+  titleEl.classList.add('show');
+  nameEl.classList.add('show');
+
+  spawnConfetti(170);
+  burst(W * 0.24, H * 0.3);
+  setTimeout(function(){ burst(W * 0.76, H * 0.24); }, 320);
+  setTimeout(function(){ burst(W * 0.5, H * 0.18); }, 640);
+
+  card.classList.add('show');
+  typeMessage();
+
+  hint.textContent = '轻触屏幕，让祝福再多一点';
+  hint.style.opacity = '0.5';
+  playMelody();
+}
+
+function typeMessage(){
+  msgEl.innerHTML = '';
+  signEl.classList.remove('show');
+  replayBtn.classList.remove('show');
+
+  var lines = CONFIG.wish;
+  var li = 0, ci = 0;
+  var cursor = document.createElement('i');
+  cursor.className = 'cursor';
+  msgEl.appendChild(cursor);
+
+  function step(){
+    if (li >= lines.length) {
+      cursor.remove();
+      signEl.textContent = '—— ' + CONFIG.signature;
+      signEl.classList.add('show');
+      setTimeout(function(){ replayBtn.classList.add('show'); }, 500);
+      return;
+    }
+    if (ci < lines[li].length) {
+      cursor.insertAdjacentText('beforebegin', lines[li][ci++]);
+      setTimeout(step, 48);
+    } else {
+      if (li < lines.length - 1) {
+        cursor.insertAdjacentText('beforebegin', '\n');
+      }
+      li++;
+      ci = 0;
+      setTimeout(step, 300);
+    }
+  }
+  setTimeout(step, 600);
+}
+
+replayBtn.addEventListener('click', function(e){
+  e.stopPropagation();
+  reset();
+});
+
+function reset(){
+  stage = 0;
+  stopMusic();
+  confetti.length = 0;
+  fw.length = 0;
+  smoke.length = 0;
+  sparks.length = 0;
+  hearts.length = 0;
+
+  for (var i = 0; i < candleEls.length; i++) {
+    candleEls[i].classList.remove('lit', 'out');
+  }
+  glow.classList.remove('on');
+  titleEl.classList.remove('show');
+  nameEl.classList.remove('show');
+  card.classList.remove('show');
+  signEl.classList.remove('show');
+  replayBtn.classList.remove('show');
+  msgEl.innerHTML = '';
+  hint.textContent = '轻触屏幕，点亮生日蜡烛';
+  hint.style.opacity = '';
+}
+
+/* 主交互：轻触屏幕任意处 */
+app.addEventListener('click', function(e){
+  if (e.target.closest('.icon-btn') || e.target.closest('.replay')) return;
+
+  var x = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : W / 2);
+  var y = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : H / 2);
+
+  if (stage === 0) {
+    getAudio();
+    lightCandles();
+  } else if (stage === 1) {
+    getAudio();
+    blowCandles();
+  } else {
+    spawnHeart(x, y);
+    if (Math.random() > 0.55) {
+      for (var k = 0; k < 3; k++) spawnHeart(x + (Math.random()-0.5)*40, y);
+    }
+    if (Math.random() > 0.82) burst(x, y);
+  }
+});
+
+/* 双击缩放屏蔽（微信里更稳） */
+document.addEventListener('gesturestart', function(e){ e.preventDefault(); });
+document.addEventListener('touchstart', function(e){
+  if (e.touches.length > 1) e.preventDefault();
+}, { passive: false });
+
+function vibrate(v){
+  if (navigator.vibrate) {
+    try { navigator.vibrate(v); } catch(e){}
+  }
+}
+
+/* 名字 */
+nameEl.textContent = '致 ' + CONFIG.name;
+</script>
+</body>
+</html>
